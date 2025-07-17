@@ -7,7 +7,7 @@ This project is a real-time object tracking system built using YOLOv8 from Ultra
 pip install opencv-python==4.8.1.78   
 pip install ultralytics==8.0.198   
 pip install numpy==1.24.4
-
+```
 
 # Implementation Details
 The system is implemented in Python using the Ultralytics YOLOv8 model and OpenCV for real-time video processing and user interaction.
