@@ -6,31 +6,36 @@ model = YOLO('yolov8n.pt')
 
 cam = cv2.VideoCapture(0)
 
-ret, first_frame = cam.read()
+ret, frame1 = cam.read()
 
-bbox = cv2.selectROI("Select Object", first_frame, fromCenter=False, showCrosshair=True)
+bbox = cv2.selectROI("Select Object", frame1, fromCenter=False, showCrosshair=True)
 cv2.destroyAllWindows()
 
-(x, y, w, h) = map(int, bbox)
-selected_box = [x, y, x + w, y + h]  # Convert to (x1, y1, x2, y2)
+(x, y, w, h) =  bbox
+x =  (int) (x)
+y = (int) (y)
+w = (int) (w)
+h = (int) (h)
 
-initial_result = model.predict(source=first_frame, conf=0.3)[0]
+selected_box = [x, y, x + w, y + h]  
+
+initial_result = model.predict(source=frame1, conf=0.3)[0]
 selected_class = None
 
 def compute_iou(boxA, boxB):
-    # Compute intersection over union
     xA = max(boxA[0], boxB[0])
     yA = max(boxA[1], boxB[1])
     xB = min(boxA[2], boxB[2])
     yB = min(boxA[3], boxB[3])
 
-    interArea = max(0, xB - xA) * max(0, yB - yA)
-    if interArea == 0:
-        return 0.0
-
+   
+    if max(0, yB - yA)*max(0, xB - xA) == 0:
+        return 0
     boxAArea = (boxA[2] - boxA[0]) * (boxA[3] - boxA[1])
     boxBArea = (boxB[2] - boxB[0]) * (boxB[3] - boxB[1])
-    iou = interArea / float(boxAArea + boxBArea - interArea)
+    interArea = max(0, xB - xA) * max(0, yB - yA)
+    boxAB = float(boxAArea + boxBArea - interArea)
+    iou = interArea / boxAB
     return iou
 
 best_iou = 0
@@ -56,15 +61,19 @@ while True:
 
     for result in results:
         for box in result.boxes:
-            cls_id = int(box.cls[0])
-            if cls_id != selected_class:
+            
+            if int(box.cls[0]) != selected_class:
                 continue
 
-            x1, y1, x2, y2 = map(int, box.xyxy[0])
+            x1, y1, x2, y2 =  box.xyxy[0]
+            x1 =  (int) (x1)
+            y1 = (int)  (y1) 
+            x2 = (int)  (x2)
+            y2 = (int)  (y2)
             iou = compute_iou([x1, y1, x2, y2], selected_box)
 
             if iou > 0.1:
-                label = f"{model.names[cls_id]} {box.conf[0]:.2f}"
+                label = f"{model.names[int(box.cls[0])]} {box.conf[0]:.2f}"
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
                 cv2.putText(frame, label, (x1, y1 - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
@@ -76,5 +85,5 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-cap.release()
+cam.release()
 cv2.destroyAllWindows()
