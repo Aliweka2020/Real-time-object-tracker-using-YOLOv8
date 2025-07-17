@@ -9,13 +9,18 @@ git clone  https://github.com/Aliweka2020/Real-time-object-tracker-using-YOLOv8.
 ```
 Or download the repository from the code button as Zip 
 
-# 1. Install Dependencies   
+# 2. Install Dependencies   
+For Anaconda users these commands is written in the anaconda command prompt window and for the python or Vscode users these commands is written in the command prompt window  
 ```bash
 pip install torch torchvision torchaudio
 pip install opencv-python   
 pip install ultralytics   
 pip install numpy
 ```
+# 3. Run the Application
+   * For Anaconda users the object tracking.ipynb file is launched in the jyputer notebook
+   * For the python users or Vscode users the object tracking.py file is launched in the terminal using the  ``` Python object_tracking.py ``` command
+
 
 # Implementation Details
 The system is implemented in Python using the Ultralytics YOLOv8 model and OpenCV for real-time video processing and user interaction.
