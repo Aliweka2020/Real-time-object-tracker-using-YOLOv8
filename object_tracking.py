@@ -48,7 +48,7 @@ if selected_class is None:
 print(f"Tracking class: {model.names[selected_class]}")
 
 while True:
-    ret, frame = cap.read()
+    ret, frame = cam.read()
     if not ret:
         break
 
