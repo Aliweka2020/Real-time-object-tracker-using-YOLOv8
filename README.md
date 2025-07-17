@@ -4,7 +4,7 @@ This project is a real-time object tracking system built using YOLOv8 from Ultra
 # Implementation Details
 The system is implemented in Python using the Ultralytics YOLOv8 model and OpenCV for real-time video processing and user interaction.
 
-Key Steps:
+## Key Steps:
 Webcam Initialization
 The system captures live video from the default webcam using cv2.VideoCapture().
 
