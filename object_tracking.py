@@ -2,29 +2,18 @@ import cv2
 from ultralytics import YOLO
 import numpy as np
 
-# Load YOLOv8 model
-model = YOLO('yolov8n.pt')  # Fast version
+model = YOLO('yolov8n.pt')  
 
-# Open webcam
-cap = cv2.VideoCapture(0)
-if not cap.isOpened():
-    print("Error: Cannot open webcam.")
-    exit()
+cam = cv2.VideoCapture(0)
 
-# Read first frame
-ret, first_frame = cap.read()
-if not ret:
-    print("Error: Cannot read first frame.")
-    exit()
+ret, first_frame = cam.read()
 
-# Let the user select an object to track
 bbox = cv2.selectROI("Select Object", first_frame, fromCenter=False, showCrosshair=True)
 cv2.destroyAllWindows()
 
 (x, y, w, h) = map(int, bbox)
 selected_box = [x, y, x + w, y + h]  # Convert to (x1, y1, x2, y2)
 
-# Detect objects in the first frame to identify the selected object's class
 initial_result = model.predict(source=first_frame, conf=0.3)[0]
 selected_class = None
 
@@ -44,7 +33,6 @@ def compute_iou(boxA, boxB):
     iou = interArea / float(boxAArea + boxBArea - interArea)
     return iou
 
-# Find which detection matches the selected box (best IoU)
 best_iou = 0
 for box in initial_result.boxes:
     detected_box = box.xyxy[0].cpu().numpy().astype(int)
@@ -59,7 +47,6 @@ if selected_class is None:
 
 print(f"Tracking class: {model.names[selected_class]}")
 
-# Start tracking loop
 while True:
     ret, frame = cap.read()
     if not ret:
