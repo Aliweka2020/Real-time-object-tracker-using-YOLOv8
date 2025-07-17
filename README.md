@@ -15,13 +15,13 @@ The system is implemented in Python using the Ultralytics YOLOv8 model and OpenC
 
 ## Key Steps:
 1. **Webcam Initialization**  
-The system captures live video from the default webcam using cv2.VideoCapture().
+The system captures live video from the default webcam using ```bash cv2.VideoCapture()```.
 
 2. **Manual Object Selection**  
-The user is prompted to draw a bounding box on the first frame using OpenCV’s cv2.selectROI(). This selects the target object for tracking.
+The user is prompted to draw a bounding box on the first frame using OpenCV’s ```bashcv2.selectROI()```. This selects the target object for tracking.
 
 3. **Object Detection with YOLOv8**  
-The selected frame is passed to a YOLOv8 model (e.g., yolov8n.pt) using Ultralytics’ model.predict() method. All detected objects are returned with class IDs, bounding boxes, and confidence scores.
+The selected frame is passed to a YOLOv8 model (e.g., yolov8n.pt) using Ultralytics’ ```bash model.predict()``` method. All detected objects are returned with class IDs, bounding boxes, and confidence scores.
 
 4. **Object Matching Using IoU**  
 The system calculates the Intersection over Union (IoU) between the user-drawn box and YOLO-detected boxes to find the closest match. The class ID of the matched object is stored.
